@@ -1,0 +1,9 @@
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+button.btn-primary {
+  background-color: #00aaff;
+  border-color: #00aaff;
+}
