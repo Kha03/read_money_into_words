@@ -86,7 +86,6 @@ function currencyToText(currency) {
 
 document.getElementById("convertForm").addEventListener("submit", function (e) {
   e.preventDefault();
-
   const numberInput = document.getElementById("number").value;
   const currencyInput = document.getElementById("currency").value;
 
