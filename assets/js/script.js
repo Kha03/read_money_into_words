@@ -44,11 +44,11 @@ const num2Word2 = (function () {
       var o = "",
         a = Math.floor(t / 1e6),
         t = t % 1e6;
-      a > 0 && ((o = n(a, r) + " triệu,"), (r = !0));
+      a > 0 && ((o = n(a, r) + " triệu"), (r = !0));
       var e = Math.floor(t / 1e3),
         t = t % 1e3;
       return (
-        e > 0 && ((o += n(e, r) + " ngàn,"), (r = !0)),
+        e > 0 && ((o += n(e, r) + " ngàn"), (r = !0)),
         t > 0 && (o += n(t, r)),
         o
       );
@@ -62,7 +62,7 @@ const num2Word2 = (function () {
         (ty = r % 1e9),
           (r = Math.floor(r / 1e9)),
           (n = r > 0 ? o(ty, !0) + a + n : o(ty, !1) + a + n),
-          (a = " tỷ,");
+          (a = " tỷ");
       while (r > 0);
       return n.trim();
     },
