@@ -72,7 +72,7 @@ const num2Word2 = (function () {
 function currencyToText(currency, cents) {
   switch (currency) {
     case "vnd":
-      return "Việt Nam Đồng";
+      return "đồng";
     case "usd":
       if (cents) {
         const centsText = num2Word2.convert(parseInt(cents));
@@ -91,17 +91,15 @@ function currencyToText(currency, cents) {
 
 document.getElementById("convertForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  const numberInput = document.getElementById("number").value;
+  const numberInput = parseFloat(document.getElementById("number").value);
   const currencyInput = document.getElementById("currency").value;
 
   let wholeNumber = Math.floor(numberInput);
   let cents = "";
 
-  if (currencyInput === "usd") {
-    const decimalPart = parseFloat(numberInput) % 1;
-    if (decimalPart > 0) {
-      cents = (decimalPart * 100).toFixed(0);
-    }
+  if (currencyInput === "usd" && numberInput % 1 !== 0) {
+    const decimalPart = numberInput % 1;
+    cents = (decimalPart * 100).toFixed(0);
   }
 
   if (numberInput) {
