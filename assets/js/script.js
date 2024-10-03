@@ -44,11 +44,11 @@ const num2Word2 = (function () {
       var o = "",
         a = Math.floor(t / 1e6),
         t = t % 1e6;
-      a > 0 && ((o = n(a, r) + " triệu"), (r = !0));
+      a > 0 && ((o = n(a, r) + " triệu,"), (r = !0));
       var e = Math.floor(t / 1e3),
         t = t % 1e3;
       return (
-        e > 0 && ((o += n(e, r) + " ngàn"), (r = !0)),
+        e > 0 && ((o += n(e, r) + " ngàn,"), (r = !0)),
         t > 0 && (o += n(t, r)),
         o
       );
@@ -62,21 +62,26 @@ const num2Word2 = (function () {
         (ty = r % 1e9),
           (r = Math.floor(r / 1e9)),
           (n = r > 0 ? o(ty, !0) + a + n : o(ty, !1) + a + n),
-          (a = " tỷ");
+          (a = " tỷ,");
       while (r > 0);
       return n.trim();
     },
   };
 })();
 
-function currencyToText(currency) {
+function currencyToText(currency, cents) {
   switch (currency) {
     case "vnd":
-      return "VNĐ";
+      return "Việt Nam Đồng";
     case "usd":
-      return "Đô la Mỹ";
+      if (cents) {
+        const centsText = num2Word2.convert(parseInt(cents));
+        return `Đô la Mỹ và ${centsText} cents`;
+      } else {
+        return "Đô la Mỹ";
+      }
     case "eur":
-      return "EURO";
+      return "Euro";
     case "jpy":
       return "Yên Nhật";
     default:
@@ -89,15 +94,26 @@ document.getElementById("convertForm").addEventListener("submit", function (e) {
   const numberInput = document.getElementById("number").value;
   const currencyInput = document.getElementById("currency").value;
 
+  let wholeNumber = Math.floor(numberInput);
+  let cents = "";
+
+  if (currencyInput === "usd") {
+    const decimalPart = parseFloat(numberInput) % 1;
+    if (decimalPart > 0) {
+      cents = (decimalPart * 100).toFixed(0);
+    }
+  }
+
   if (numberInput) {
-    const numberText = num2Word2.convert(parseInt(numberInput));
-    const currencyText = currencyToText(currencyInput);
+    const numberText = num2Word2.convert(parseInt(wholeNumber));
+    const currencyText = currencyToText(currencyInput, cents);
 
     const result = `${numberText} ${currencyText}`;
     const formatResult = result.charAt(0).toUpperCase() + result.slice(1);
     document.getElementById("resultText").textContent = formatResult;
   }
 });
+
 document.getElementById("copyButton").addEventListener("click", function () {
   const resultText = document.getElementById("resultText").textContent;
   navigator.clipboard.writeText(resultText).then(function () {
